@@ -1,0 +1,3 @@
+[submodule "proto3-wire"]
+	path = proto3-wire
+	url = ../proto3-wire
