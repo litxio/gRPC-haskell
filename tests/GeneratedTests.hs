@@ -26,6 +26,8 @@ testServerGeneration = testCase "server generation" $ do
         , extraInstanceFiles = []
         , inputProto = "simple.proto"
         , outputDir = hsTmpDir
+        , stringType = StringType "Data.String" "String"
+        , recordStyle = RegularRecords
         }
   compileDotProtoFileOrDie args
 
@@ -60,6 +62,8 @@ testClientGeneration = testCase "client generation" $ do
         , extraInstanceFiles = []
         , inputProto = "simple.proto"
         , outputDir = hsTmpDir
+        , stringType = StringType "Data.String" "String"
+        , recordStyle = RegularRecords
         }
   compileDotProtoFileOrDie args
 

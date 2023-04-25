@@ -273,6 +273,7 @@ instance Arbitrary Packing where
 --   are meaningful in every type context.
 data DotProtoType
   = Prim           DotProtoPrimType
+  | Optional       DotProtoPrimType -- NOTE currently not supported properly
   | Repeated       DotProtoPrimType
   | NestedRepeated DotProtoPrimType
   | Map            DotProtoPrimType DotProtoPrimType

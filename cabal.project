@@ -7,4 +7,7 @@ packages:
 
 flags: -swagger -dhall -large-records
 
-allow-newer: text, aeson, bytestring, async, primitive, ghc-prim, base
+constraints:
+  hastache == 0.6.1
+
+allow-newer: text, aeson, bytestring, async, primitive, ghc-prim, base, criterion

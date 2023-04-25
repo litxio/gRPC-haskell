@@ -638,6 +638,7 @@ foldDPT dptToHsCont foldPrim ctxt dpt =
   in
     case dpt of
       Prim pType           -> cont <$> prim pType
+      Optional pType       -> cont <$> prim pType
       Repeated pType       -> cont <$> prim pType
       NestedRepeated pType -> cont <$> prim pType
       Map k v  | validMapKey k -> HsTyApp . cont <$> prim k <*> go (Prim v) -- need to 'Nest' message types
@@ -670,6 +671,7 @@ dptToHsContType :: FieldContext -> TypeContext -> DotProtoType -> HsType -> HsTy
 dptToHsContType fc ctxt = \case
   Prim (Named tyName) | WithinMessage <- fc, isMessage ctxt tyName
                      -> HsTyApp $ primType_ "Maybe"
+  Optional _         -> HsTyApp $ primType_ "Maybe"
   Repeated _         -> HsTyApp $ primType_ "Vector"
   NestedRepeated _   -> HsTyApp $ primType_ "Vector"
   Map _ _            -> HsTyApp $ primType_ "Map"
@@ -781,10 +783,12 @@ dotProtoMessageD stringType recordStyle ctxt parentIdent messageIdent messagePar
             [ recDecl_ (HsIdent messageName) flds ]
             defaultMessageDeriving
 
+#ifdef SWAGGER
     let getName = \case
           DotProtoMessageField fld -> (: []) <$> getFieldNameForSchemaInstanceDeclaration fld
           DotProtoMessageOneOf ident _ -> (: []) . (Nothing, ) <$> dpIdentUnqualName ident
           _ -> pure []
+#endif SWAGGER
 
     messageDataDecl <- mkDataDecl <$> foldMapM (messagePartFieldD messageName) messageParts
 
@@ -1877,6 +1881,7 @@ optionE (DotProtoOption name value) =
 -- | Translate a dot proto type to its Haskell AST type
 dpTypeE :: DotProtoType -> HsExp
 dpTypeE (Prim p)           = apply primC           [ dpPrimTypeE p ]
+dpTypeE (Optional p)       = apply optionalC       [ dpPrimTypeE p ]
 dpTypeE (Repeated p)       = apply repeatedC       [ dpPrimTypeE p ]
 dpTypeE (NestedRepeated p) = apply nestedRepeatedC [ dpPrimTypeE p ]
 dpTypeE (Map k v)          = apply mapC            [ dpPrimTypeE k, dpPrimTypeE v]
