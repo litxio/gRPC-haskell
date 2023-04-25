@@ -1,8 +1,5 @@
 
 packages:
    ./
+ , ./proto3-wire
 
-source-repository-package
-   type: git
-   location: file:/home/richard/workspace/third_party/proto3-wire
-   tag: bf3e924851c19d61d058f4f7780ade0492ed9d56
