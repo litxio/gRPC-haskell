@@ -28,9 +28,11 @@
         })
       ];
     pkgs = import nixpkgs { inherit system overlays; };
-  in (pkgs.hixProject.flake {}) // {
+    flake = pkgs.hixProject.flake {};
+  in flake // {
+    fux = flake;
 
-    packages.x86_64-linux.default = self.packages.x86_64-linux.hello;
+    packages.x86_64-linux.default = flake.packages."grpc-haskell:lib:grpc-haskell";
 
   };
 }

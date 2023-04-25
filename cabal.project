@@ -1,5 +1,10 @@
 
 packages:
    ./
+ , ./core
  , ./proto3-wire
+ , ./proto3-suite
 
+flags: -swagger -dhall -large-records
+
+allow-newer: text, aeson, bytestring, async, primitive, ghc-prim, base

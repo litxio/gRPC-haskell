@@ -57,7 +57,7 @@ library
     Network.GRPC.LowLevel.Client
   extra-libraries:
       grpc
-    , gpr
+    -- , gpr
   includes:
       include/grpc_haskell.h
     , grpc/grpc.h
