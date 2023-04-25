@@ -1,0 +1,4 @@
+resolver: lts-19.0
+
+extra-deps:
+  - word-compat-0.0.2
