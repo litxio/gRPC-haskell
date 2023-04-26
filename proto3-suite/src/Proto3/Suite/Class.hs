@@ -767,6 +767,18 @@ instance (MessageField e, KnownSymbol comments) => MessageField (e // comments) 
       lowerProxy2 :: forall k f (a :: k) b. Proxy# (f a b) -> Proxy a
       lowerProxy2 _ = Proxy
 
+
+instance MessageField a => MessageField (Maybe a) where
+
+  encodeMessageField num (Just x) = encodeMessageField num x
+  encodeMessageField _ Nothing = mempty
+
+  decodeMessageField = Just <$> decodeMessageField
+
+  -- | Get the type which represents this type inside another message.
+  -- protoType :: Proxy# a -> DotProtoField
+  protoType _ = protoType (proxy# :: Proxy# a)
+
 decodePacked
   :: Parser RawPrimitive [a]
   -> Parser RawField (PackedVec a)
